@@ -7,6 +7,7 @@ export const useAuth = () => {
   const { user, setUser, loading, setLoading } = context;
 
   const handleLogin = async ({ email, password }) => {
+    console.log("Login button clicked");
     setLoading(true);
     try {
       const data = await login({ email, password });
