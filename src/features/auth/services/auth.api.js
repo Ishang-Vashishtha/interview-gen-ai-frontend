@@ -14,7 +14,7 @@ export async function register({ username, email, password }) {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log("error in register request", error);
   }
 }
 
@@ -27,7 +27,7 @@ export async function login({ email, password }) {
     });
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log("error in login request", error);
   }
 }
 
@@ -36,7 +36,7 @@ export async function logout() {
     const response = await api.get("/api/auth/logout");
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log("error in logout request", error);
   }
 }
 
@@ -45,6 +45,6 @@ export async function getMe() {
     const response = await api.get("/api/auth/get-me");
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.log("error in get-me request", error);
   }
 }
