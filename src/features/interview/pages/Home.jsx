@@ -7,9 +7,15 @@ const Home = () => {
   const { loading, generateReport, reports } = useInterview();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
+  const [selectedResumeName, setSelectedResumeName] = useState("");
   const resumeInputRef = useRef();
 
   const navigate = useNavigate();
+
+  const handleResumeSelection = (event) => {
+    const file = event.target.files?.[0];
+    setSelectedResumeName(file ? file.name : "");
+  };
 
   const handleGenerateReport = async () => {
     const resumeFile = resumeInputRef.current.files[0];
@@ -109,7 +115,10 @@ const Home = () => {
                 Upload Resume
                 <span className="badge badge--best">Best Results</span>
               </label>
-              <label className="dropzone" htmlFor="resume">
+              <label
+                className={`dropzone ${selectedResumeName ? "dropzone--selected" : ""}`}
+                htmlFor="resume"
+              >
                 <span className="dropzone__icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -128,16 +137,23 @@ const Home = () => {
                   </svg>
                 </span>
                 <p className="dropzone__title">
-                  Click to upload or drag &amp; drop
+                  {selectedResumeName
+                    ? "Resume selected"
+                    : "Click to upload or drag &amp; drop"}
                 </p>
-                <p className="dropzone__subtitle">PDF or DOCX (Max 5MB)</p>
+                <p className="dropzone__subtitle">
+                  {selectedResumeName
+                    ? `Selected file: ${selectedResumeName}`
+                    : "PDF, DOC, or DOCX (Max 5MB)"}
+                </p>
                 <input
                   ref={resumeInputRef}
                   hidden
                   type="file"
                   id="resume"
                   name="resume"
-                  accept=".pdf,.docx"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleResumeSelection}
                 />
               </label>
             </div>

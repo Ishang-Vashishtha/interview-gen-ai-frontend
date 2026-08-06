@@ -230,6 +230,11 @@ $font-stack:
     background-color: rgba($accent, 0.05);
   }
 
+  &--selected {
+    border-color: $accent;
+    background-color: rgba($accent, 0.08);
+  }
+
   &__icon {
     color: $accent;
     margin-bottom: 0.25rem;
