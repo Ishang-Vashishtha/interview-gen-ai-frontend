@@ -40,7 +40,39 @@ $font-stack:
 
 // ── Page Header ──────────────────────────────────────────────────────────────
 .page-header {
-  text-align: center;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+
+  &__content {
+    text-align: center;
+    flex: 1;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+    min-width: 160px;
+  }
+
+  &__user {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background-color: rgba($accent, 0.12);
+    border: 1px solid rgba($accent, 0.25);
+    color: $text-primary;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: right;
+  }
 
   h1 {
     font-size: 2.25rem;
@@ -59,6 +91,36 @@ $font-stack:
 
   .highlight {
     color: $accent;
+  }
+}
+
+.logout-btn {
+  padding: 0.7rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid rgba($accent, 0.35);
+  background: rgba($accent, 0.08);
+  color: $text-primary;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    transform 0.1s,
+    opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    background: rgba($accent, 0.14);
+    border-color: rgba($accent, 0.55);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
   }
 }
 
@@ -380,6 +442,8 @@ $font-stack:
   display: flex;
   gap: 1.5rem;
 
+  align-self: center;
+
   a {
     font-size: 0.8rem;
     color: $text-muted;
@@ -388,6 +452,22 @@ $font-stack:
 
     &:hover {
       color: $text-primary;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: center;
+
+    &__actions {
+      align-items: center;
+      min-width: 0;
+    }
+
+    &__user {
+      text-align: center;
     }
   }
 }
