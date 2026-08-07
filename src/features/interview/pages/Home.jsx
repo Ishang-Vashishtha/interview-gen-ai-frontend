@@ -4,6 +4,15 @@ import { useInterview } from "../hooks/useInterview.js";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../auth/hooks/useAuth.js";
 
+const formatReportDate = (dateValue) => {
+  const date = new Date(dateValue);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 const Home = () => {
   const { loading: interviewLoading, generateReport, reports } = useInterview();
   const { user, loading: authLoading, handleLogout } = useAuth();
@@ -275,7 +284,7 @@ const Home = () => {
               >
                 <h3>{report.title || "Untitled Position"}</h3>
                 <p className="report-meta">
-                  Generated on {new Date(report.createdAt).toLocaleDateString()}
+                  Generated on {formatReportDate(report.createdAt)}
                 </p>
                 <p
                   className={`match-score ${report.matchScore >= 80 ? "score--high" : report.matchScore >= 60 ? "score--mid" : "score--low"}`}
