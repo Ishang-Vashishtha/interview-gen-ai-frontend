@@ -2,9 +2,11 @@ import React, { useState, useRef } from "react";
 import "../style/home.scss";
 import { useInterview } from "../hooks/useInterview.js";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../auth/hooks/useAuth.js";
 
 const Home = () => {
-  const { loading, generateReport, reports } = useInterview();
+  const { loading: interviewLoading, generateReport, reports } = useInterview();
+  const { user, loading: authLoading, handleLogout } = useAuth();
   const [jobDescription, setJobDescription] = useState("");
   const [selfDescription, setSelfDescription] = useState("");
   const [selectedResumeName, setSelectedResumeName] = useState("");
@@ -27,7 +29,12 @@ const Home = () => {
     navigate(`/interview/${data._id}`);
   };
 
-  if (loading) {
+  const handleLogoutClick = async () => {
+    await handleLogout();
+    navigate("/login", { replace: true });
+  };
+
+  if (interviewLoading) {
     return (
       <main className="loading-screen">
         <h1>Loading your interview plan...</h1>
@@ -39,13 +46,31 @@ const Home = () => {
     <div className="home-page">
       {/* Page Header */}
       <header className="page-header">
-        <h1>
-          Create Your Custom <span className="highlight">Interview Plan</span>
-        </h1>
-        <p>
-          Let our AI analyze the job requirements and your unique profile to
-          build a winning strategy.
-        </p>
+        <div className="page-header__content">
+          <h1>
+            Create Your Custom <span className="highlight">Interview Plan</span>
+          </h1>
+          <p>
+            Let our AI analyze the job requirements and your unique profile to
+            build a winning strategy.
+          </p>
+        </div>
+
+        <div className="page-header__actions">
+          {user?.username ? (
+            <span className="page-header__user">
+              Signed in as {user.username}
+            </span>
+          ) : null}
+          <button
+            type="button"
+            className="logout-btn"
+            onClick={handleLogoutClick}
+            disabled={authLoading}
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       {/* Main Card */}

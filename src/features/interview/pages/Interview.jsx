@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../style/interview.scss";
 import { useInterview } from "../hooks/useInterview.js";
 import { useNavigate, useParams } from "react-router";
+import { useAuth } from "../../auth/hooks/useAuth.js";
 
 const NAV_ITEMS = [
   {
@@ -132,13 +133,21 @@ const Interview = () => {
   const [activeNav, setActiveNav] = useState("technical");
   const { report, getReportById, loading, getResumePdf, downloading } =
     useInterview();
+  const { loading: authLoading, user, handleLogout } = useAuth();
   const { interviewId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (interviewId) {
       getReportById(interviewId);
     }
   }, [interviewId]);
+
+  const handleLogoutClick = async () => {
+    await handleLogout();
+    navigate("/login", { replace: true });
+  };
+
   if (downloading) {
     return (
       <main className="loading-screen">
@@ -179,6 +188,22 @@ const Interview = () => {
                 {item.label}
               </button>
             ))}
+
+            <div className="interview-nav__account">
+              {user?.username ? (
+                <span className="interview-nav__user">
+                  Signed in as {user.username}
+                </span>
+              ) : null}
+              <button
+                type="button"
+                className="interview-nav__logout"
+                onClick={handleLogoutClick}
+                disabled={authLoading}
+              >
+                Logout
+              </button>
+            </div>
           </div>
           <button
             onClick={() => {
