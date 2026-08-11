@@ -1,18 +1,25 @@
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth.context";
-import { login, register, logout, getMe } from "../services/auth.api";
+import {
+  login,
+  register,
+  logout,
+  getMe,
+  verifyRegisterOtp,
+} from "../services/auth.api";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   const { user, setUser, loading, setLoading } = context;
 
   const handleLogin = async ({ email, password }) => {
-    // console.log("Login button clicked");
     setLoading(true);
     try {
       const data = await login({ email, password });
       setUser(data.user);
+      return data;
     } catch (error) {
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -22,18 +29,35 @@ export const useAuth = () => {
     setLoading(true);
     try {
       const data = await register({ username, email, password });
-      setUser(data.user);
+      return data;
     } catch (error) {
+      throw error;
     } finally {
       setLoading(false);
     }
   };
+
+  const handleVerifyRegisterOtp = async ({ email, otp }) => {
+    setLoading(true);
+    try {
+      const data = await verifyRegisterOtp({ email, otp });
+      setUser(data.user);
+      return data;
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     try {
       const data = await logout();
       setUser(null);
+      return data;
     } catch (error) {
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -44,7 +68,9 @@ export const useAuth = () => {
     try {
       const data = await getMe();
       setUser(data.user);
+      return data;
     } catch (error) {
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -70,6 +96,7 @@ export const useAuth = () => {
     loading,
     handleLogin,
     handleRegister,
+    handleVerifyRegisterOtp,
     handleLogout,
     handleGetMe,
   };
